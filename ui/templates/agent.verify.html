@@ -1,0 +1,22 @@
+{{ define "agent.verify.layout" }}
+{{ template "agent.header"}}
+{{ template "agent.verify.content" }}
+{{ template "agent.footer" }}
+{{ end }}
+
+{{ define "agent.verify.content" }}
+<div class="container mx-auto">
+    <div class="row mx-auto">
+        <div class="col-md-3"></div>
+        <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
+            <form  class="p-3 pt-5">
+                <div class="form-group">
+                <label for="exampleInputEmail1 text-center">የመራጭ መለያ ቁጥር</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="የመራጭ መለያ ቁጥር አስገባ" required>
+            </div>
+            <button type="submit" class="btn btn-danger form-control">ፈልግ</button>
+            </form>
+        </div>
+    </div>
+</div>
+{{ end }}

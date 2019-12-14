@@ -1,0 +1,16 @@
+html, body, .container {
+    background-color: #F8F9FA;
+}
+
+#form-login {
+    margin-top: 50px;
+}
+
+#logo{
+    width: 200px;
+    padding-top: 20px;
+}
+
+footer {
+    /* margin-top: 50px; */
+}

@@ -1,0 +1,34 @@
+{{ define "agent.login.layout" }}
+{{ template "agent.login.content" }}
+{{ template "agent.footer" }}
+{{ end }}
+
+{{ define "agent.login.content" }}
+<head>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/agent.css">
+</head>
+<div class="container mx-auto">
+    <div class="row mx-auto">
+        <div class="col-md-3"></div>
+        <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
+            <div class="mx-auto" id="logo">
+                <img src="../assets/img/logo.jpg"  width="200px" alt="" srcset="">
+                <h5 class="text-center">ሕዳግ የምርጫ መተግበሪያ ውኂብ</h5>
+            </div>
+            <form  class="p-3 pt-5">
+                <div class="form-group">
+                <label for="exampleInputEmail1 text-center">መለያ ቁጥር</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="መለያ ቁጥር አስገባ">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1 text-center">የይለፍ ቃል</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="የይለፍ ቃል አስገባ">
+            </div>
+            <button type="submit" class="btn btn-success form-control">ቀጥል</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+{{ end }}
