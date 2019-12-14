@@ -16,8 +16,8 @@ func NewVMServiceImpl(vmRepo votingmachine.VMRepository) *VMServiceImpl {
 }
 
 // Verify performs user authentication
-func (vmsi *VMServiceImpl) Verify() ([]entity.Party, []entity.Party, string, error) {
-	regionalCands, nationalCands, vid, err := vmsi.vmRepo.Verify()
+func (vmsi *VMServiceImpl) Verify(pcid int) ([]entity.Party, []entity.Party, string, error) {
+	regionalCands, nationalCands, vid, err := vmsi.vmRepo.Verify(pcid)
 
 	if err != nil {
 		return nil, nil, "", err

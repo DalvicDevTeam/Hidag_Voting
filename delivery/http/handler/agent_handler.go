@@ -18,7 +18,7 @@ func NewAgentHandler(T *template.Template, catserv agent.AgentService) *AgentHan
 	return &AgentHandler{tmpl: T, categorySrv: catserv}
 }
 
-// AgentIndex handles request on /Agent
+// AgentIndex handles request on /agent
 func (ah *AgentHandler) AgentIndex(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "agent.verify.layout", nil)
