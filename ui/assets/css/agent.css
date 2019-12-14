@@ -14,3 +14,16 @@ html, body, .container {
 footer {
     /* margin-top: 50px; */
 }
+
+.radio {
+    width: 30px;
+    height: 50px;
+    margin-top: 15px;
+    float: right;
+}
+
+#vote-btn {
+    width: 200px;
+    height: 50px;
+    float: right;
+}

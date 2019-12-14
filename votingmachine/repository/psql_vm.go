@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/helper"
+
 	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 )
 
@@ -24,14 +26,13 @@ func (vmri *VMRepositoryImpl) Verify(pcid int) ([]entity.Party, []entity.Party, 
 	if row != nil {
 		err := row.Scan(&vm.ID, &vm.VoterID, &vm.VoteMachineID, &vm.Language)
 
-		pollidrow := vmri.conn.QueryRow("select * from voters where voter_id = $1", vm.VoterID)
+		// pollidrow := vmri.conn.QueryRow("select * from voters where voter_id = $1", vm.VoterID)
 
 		if err != nil {
 			return nil, nil, "", errors.New(" votem voter Row scannng failed")
 		}
-
-		regrows, err1 := vmri.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1)) and is_regional != 0", vm.PollNo)
-		natrows, err2 := vmri.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1)) and is_regional != 0", vm.PollNo)
+		regrows, err1 := vmri.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1)) and is_regional != 0", helper.GetVMData().PollNo)
+		natrows, err2 := vmri.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1)) and is_regional != 0", helper.GetVMData().PollNo)
 
 		regionalCands := []entity.Party{}
 		nationalCands := []entity.Party{}
