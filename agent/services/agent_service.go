@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/NatnaelBerhanu-1/Hackathon/e-voting-system/agent"
-	"github.com/NatnaelBerhanu-1/Hackathon/e-voting-system/entity"
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/agent"
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 )
 
 // AgentServiceImpl represents

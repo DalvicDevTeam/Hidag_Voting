@@ -1,6 +1,6 @@
 package votingmachine
 
-import "github.com/NatnaelBerhanu-1/Hackathon/e-voting-system/entity"
+import "github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 
 // VMRepository represents voting machine reated functinality imps
 type VMRepository interface {

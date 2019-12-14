@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/NatnaelBerhanu-1/Hackathon/e-voting-system/entity"
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 )
 
 // VMRepositoryImpl represents
