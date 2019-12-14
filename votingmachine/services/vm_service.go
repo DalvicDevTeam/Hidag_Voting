@@ -15,14 +15,24 @@ func NewVMServiceImpl(vmRepo votingmachine.VMRepository) *VMServiceImpl {
 	return &VMServiceImpl{vmRepo: vmRepo}
 }
 
-// Authenticate performs user authentication
-func (vmsi *VMServiceImpl) Authenticate(pcnum string) ([]entity.Party, []entity.Party, error) {
-	regionalCands, nationalCands, err := vmsi.vmRepo.Authenticate(pcnum)
+// Verify performs user authentication
+func (vmsi *VMServiceImpl) Verify() ([]entity.Party, []entity.Party, string, error) {
+	regionalCands, nationalCands, vid, err := vmsi.vmRepo.Verify()
 
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, "", err
 	}
-	return regionalCands, nationalCands, nil
+	return regionalCands, nationalCands, vid, nil
+}
+
+// Authenticate performs pc authentication
+func (vmsi *VMServiceImpl) Authenticate(pcnum string) (entity.VoteMachine, error) {
+	vm, err := vmsi.vmRepo.Authenticate(pcnum)
+
+	if err != nil {
+		return entity.VoteMachine{}, err
+	}
+	return vm, nil
 }
 
 // Vote performs

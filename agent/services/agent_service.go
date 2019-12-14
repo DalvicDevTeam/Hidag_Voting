@@ -38,8 +38,8 @@ func (asi *AgentServiceImpl) Verify(id string) ([]entity.VoteMachine, entity.Vot
 }
 
 // OpenPc reps
-func (asi *AgentServiceImpl) OpenPc(voterid string, pcnum string, lang string) error {
-	err := asi.agentRepo.OpenPc(voterid, pcnum, lang)
+func (asi *AgentServiceImpl) OpenPc(voterid string, pcid int, lang string) error {
+	err := asi.agentRepo.OpenPc(voterid, pcid, lang)
 
 	if err != nil {
 		return err

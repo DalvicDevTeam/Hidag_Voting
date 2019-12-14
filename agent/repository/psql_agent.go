@@ -19,6 +19,7 @@ func NewAgentRepositoryImpl(conn *sql.DB) *AgentRepositoryImpl {
 
 // Authenticate reps
 func (ari *AgentRepositoryImpl) Authenticate(id string, password string) (entity.Agent, error) {
+<<<<<<< HEAD
 	row := ari.conn.QueryRow("SELECT * FROM agents where agent_id = $1 and password =", id, password)
 
 	agent := entity.Agent{}
@@ -30,6 +31,17 @@ func (ari *AgentRepositoryImpl) Authenticate(id string, password string) (entity
 
 	if agent.Password != password {
 		return agent, err
+=======
+	row := ari.conn.QueryRow("select * from agents where agent_id = $1 and password = $2", id, password)
+	agent := entity.Agent{}
+	if row != nil {
+		err := row.Scan(&agent.ID, &agent.PollNo, &agent.FirstName, &agent.LastName, &agent.Password, &agent.AgentID)
+		if err != nil {
+			return agent, err
+		}
+	} else {
+		return agent, errors.New("agent not found")
+>>>>>>> f6837be55a337321eef90f8864d1b11e62e430d0
 	}
 
 	return entity.Agent{}, errors.New("")
@@ -37,10 +49,45 @@ func (ari *AgentRepositoryImpl) Authenticate(id string, password string) (entity
 
 // Verify reps
 func (ari *AgentRepositoryImpl) Verify(id string) ([]entity.VoteMachine, entity.Voter, error) {
-	return []entity.VoteMachine{}, entity.Voter{}, errors.New("")
+	row := ari.conn.QueryRow("select * from voters where voter_id = $1 and voted = 0", id)
+	voter := entity.Voter{}
+	vms := []entity.VoteMachine{}
+	if row != nil {
+		row.Scan(&voter.ID, &voter.FirstName, &voter.LastName, &voter.SurName, &voter.IDNum, &voter.VoterID, &voter.PollNo, &voter.Disability, &voter.Voted)
+		// rows, err := ari.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1))", voter.PollNo)
+		rows, err := ari.conn.Query("select * from vote_machines where poll_no = $1", voter.PollNo)
+
+		if err != nil {
+			return vms, voter, errors.New("could not query the database")
+		}
+		for rows.Next() {
+			vm := entity.VoteMachine{}
+			err = rows.Scan(&vm.ID, &vm.PollNo, &vm.PcNo, &vm.Status)
+			if err != nil {
+				return vms, voter, err
+			}
+
+			vms = append(vms, vm)
+		}
+
+		return vms, voter, nil
+
+	}
+	return vms, voter, errors.New("voter not found")
 }
 
 // OpenPc reps
-func (ari *AgentRepositoryImpl) OpenPc(voterid string, pcnum string) error {
-	return errors.New("")
+func (ari *AgentRepositoryImpl) OpenPc(voterid string, pcid int, lang string) error {
+
+	_, err := ari.conn.Exec("insert into votem_voter(voter_id, votem_id, language) values($1, $2, $3)", voterid, pcid, lang)
+	if err != nil {
+		return errors.New("can't open pc")
+	}
+
+	_, err2 := ari.conn.Exec("update vote_machines set status = 0 where id = $1", pcid)
+	if err2 != nil {
+		return errors.New("can't open pc")
+	}
+
+	return nil
 }

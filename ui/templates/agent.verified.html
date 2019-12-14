@@ -1,0 +1,77 @@
+{{ define "agent.verified.layout" }}
+{{ template "agent.header" }}
+{{ template "agent.verified.content" .}}
+{{ template "agent.footer" }}
+{{ end }}
+
+{{ define "agent.verified.content" }}
+<div class="container mx-auto">
+    <div class="row mx-auto">
+        <div class="col-md-3"></div>
+        <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
+            <div class="p-3">
+                <p>ስም፡ አበበ ከበደ</p> 
+                <p>አድራሻ፡ አሰላ</p>
+                <p>መታ.ቁጥር፡ 1023848/08</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mx-auto">
+        <div class="col-md-3"></div>
+        <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
+            <h3 class="p-3">መምራጫዎች</h3>
+            <div class="">
+                <div class="vmachines border m-2 p-3 rounded">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="../assets/img/vmachine.jpg" width="50px" class="mx-auto" alt="">
+                        </div>
+                        <div class="col-md-3">
+                            <p>መምረጫ ቁጥር 1 <lable class="badge badge-success">ክፍት ነው</lable></p>
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <select class="custom-select">
+                                <option selected>ቋንቋ</option>
+                                <option value="1">አማርኛ</option>
+                                <option value="2">Oromifa</option>
+                                <option value="3">ትግርግኛ</option>
+                              </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary">ክፈት</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="vmachines border m-2 p-3 rounded">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="../assets/img/vmachine.jpg" width="50px" class="mx-auto" alt="">
+                        </div>
+                        <div class="col-md-3">
+                            <p>መምረጫ ቁጥር 2 <lable class="badge badge-danger">ተይዟል</lable></p>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="custom-select">
+                                <option selected>ቋንቋ</option>
+                                <option value="1">አማርኛ</option>
+                                <option value="2">Oromifa</option>
+                                <option value="3">ትግርግኛ</option>
+                              </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary" disabled>ክፈት</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
+{{ end }}
