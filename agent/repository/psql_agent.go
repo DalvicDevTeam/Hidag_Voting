@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 
 	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 )
@@ -19,43 +20,30 @@ func NewAgentRepositoryImpl(conn *sql.DB) *AgentRepositoryImpl {
 
 // Authenticate reps
 func (ari *AgentRepositoryImpl) Authenticate(id string, password string) (entity.Agent, error) {
-<<<<<<< HEAD
-	row := ari.conn.QueryRow("SELECT * FROM agents where agent_id = $1 and password =", id, password)
-
-	agent := entity.Agent{}
-
-	err := row.Scan(&agent.AgentID, &agent.FirstName, &agent.ID, &agent.LastName, &agent.Password, &agent.PollNo)
-	if err != nil {
-		return agent, err
-	}
-
-	if agent.Password != password {
-		return agent, err
-=======
+	fmt.Println(id, password)
 	row := ari.conn.QueryRow("select * from agents where agent_id = $1 and password = $2", id, password)
+	fmt.Println("row: ", row)
 	agent := entity.Agent{}
 	if row != nil {
 		err := row.Scan(&agent.ID, &agent.PollNo, &agent.FirstName, &agent.LastName, &agent.Password, &agent.AgentID)
 		if err != nil {
 			return agent, err
 		}
+		return agent, nil
 	} else {
 		return agent, errors.New("agent not found")
->>>>>>> f6837be55a337321eef90f8864d1b11e62e430d0
 	}
-
-	return entity.Agent{}, errors.New("")
 }
 
 // Verify reps
-func (ari *AgentRepositoryImpl) Verify(id string) ([]entity.VoteMachine, entity.Voter, error) {
-	row := ari.conn.QueryRow("select * from voters where voter_id = $1 and voted = 0", id)
+func (ari *AgentRepositoryImpl) Verify(id string, pollnum string) ([]entity.VoteMachine, entity.Voter, error) {
+	row := ari.conn.QueryRow("select * from voters where voter_id = $1 and poll_no = $2 and voted = 0", id, pollnum)
 	voter := entity.Voter{}
 	vms := []entity.VoteMachine{}
 	if row != nil {
 		row.Scan(&voter.ID, &voter.FirstName, &voter.LastName, &voter.SurName, &voter.IDNum, &voter.VoterID, &voter.PollNo, &voter.Disability, &voter.Voted)
 		// rows, err := ari.conn.Query("select * from parties where id in (select party_id from party_poll where poll_id = (select id from polls where poll_no = $1))", voter.PollNo)
-		rows, err := ari.conn.Query("select * from vote_machines where poll_no = $1", voter.PollNo)
+		rows, err := ari.conn.Query("select * from vote_machines where poll_no = $1 and status = 0", voter.PollNo)
 
 		if err != nil {
 			return vms, voter, errors.New("could not query the database")
@@ -84,7 +72,7 @@ func (ari *AgentRepositoryImpl) OpenPc(voterid string, pcid int, lang string) er
 		return errors.New("can't open pc")
 	}
 
-	_, err2 := ari.conn.Exec("update vote_machines set status = 0 where id = $1", pcid)
+	_, err2 := ari.conn.Exec("update vote_machines set status = 1 where id = $1", pcid)
 	if err2 != nil {
 		return errors.New("can't open pc")
 	}

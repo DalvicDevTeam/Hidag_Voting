@@ -1,8 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
+
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/helper"
 
 	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/votingmachine"
 )
@@ -11,6 +16,12 @@ import (
 type VMHandler struct {
 	tmpl  *template.Template
 	vmSrv votingmachine.VMService
+}
+
+// PData struct
+type PData struct {
+	RegCand []entity.Party
+	NatCand []entity.Party
 }
 
 // NewVMHandler creates new Voter handler struct
@@ -29,6 +40,21 @@ func (ah *VMHandler) VoterIndex(w http.ResponseWriter, r *http.Request) {
 func (ah *VMHandler) VoterLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "voter.login.layout", nil)
+	} else {
+		vmnum := r.FormValue("vmnum")
+
+		fmt.Println("pcnum: ", vmnum)
+
+		regionalCands, nationalCands, vm, err := ah.vmSrv.Authenticate(vmnum)
+
+		data := &PData{RegCand: regionalCands, NatCand: nationalCands}
+
+		if err != nil {
+			panic(err)
+		}
+
+		helper.NewVMData(vm)
+		ah.tmpl.ExecuteTemplate(w, "voter.vote.layout", data)
 	}
 }
 

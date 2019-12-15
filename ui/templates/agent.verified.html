@@ -10,9 +10,11 @@
         <div class="col-md-3"></div>
         <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
             <div class="p-3">
-                <p>ስም፡ አበበ ከበደ</p> 
-                <p>አድራሻ፡ አሰላ</p>
-                <p>መታ.ቁጥር፡ 1023848/08</p>
+                <!-- {{ . }} -->
+                <p>ስም፡ {{ .Voter.FirstName}} {{ .Voter.LastName}}</p> 
+                <p>አድራሻ፡ አዲስ አባባ</p>
+                <p>መታ.ቁጥር፡ {{ .Voter.IDNum }}</p>
+                <input id="vid" type="text" class="hidden form-control" value="{{ .Voter.VoterID }}">{{ .Voter.VoterID }}</input>
             </div>
         </div>
 
@@ -23,55 +25,54 @@
         <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
             <h3 class="p-3">መምራጫዎች</h3>
             <div class="">
-                <div class="vmachines border m-2 p-3 rounded">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img src="../assets/img/vmachine.jpg" width="50px" class="mx-auto" alt="">
-                        </div>
-                        <div class="col-md-3">
-                            <p>መምረጫ ቁጥር 1 <lable class="badge badge-success">ክፍት ነው</lable></p>
-                            
-                        </div>
-                        <div class="col-md-3">
-                            <select class="custom-select">
-                                <option selected>ቋንቋ</option>
-                                <option value="1">አማርኛ</option>
-                                <option value="2">Oromifa</option>
-                                <option value="3">ትግርግኛ</option>
-                              </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-primary">ክፈት</button>
-                        </div>
-                    </div>
+                {{ range .Vms }}
                     
-                </div>
-                <div class="vmachines border m-2 p-3 rounded">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img src="../assets/img/vmachine.jpg" width="50px" class="mx-auto" alt="">
+                    <div class="vmachines border m-2 p-3 rounded">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img src="../assets/img/vmachine.jpg" width="50px" class="mx-auto" alt="">
+                            </div>
+                            <div class="col-md-3">
+                                <p>{{ .PcNo }}<lable class="badge badge-success">ክፍት ነው</lable></p>
+                                
+                            </div>
+                            <div class="col-md-3">
+                                <select class="custom-select">
+                                    <option selected>ቋንቋ</option>
+                                    <option value="1">አማርኛ</option>
+                                    <option value="2">Oromifa</option>
+                                    <option value="3">ትግርግኛ</option>
+                                  </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary" onclick="test('{{.ID}}')">ክፈት</button>
+                                <script>
+                                    function test(a){
+                                        $id = $("#vid").val();
+                                        console.log(a, $id);
+                                        $.post("http://localhost:8080/agent/openpc",
+                                        {
+                                            voterid: $id,
+                                            pcnum: a
+                                        }, function(data, status){
+                                            if(status === 'success') {
+                                                window.location.href = "http://localhost:8080/agent"
+                                            }
+                                        });
+                                    }
+
+                                    
+                                </script>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <p>መምረጫ ቁጥር 2 <lable class="badge badge-danger">ተይዟል</lable></p>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="custom-select">
-                                <option selected>ቋንቋ</option>
-                                <option value="1">አማርኛ</option>
-                                <option value="2">Oromifa</option>
-                                <option value="3">ትግርግኛ</option>
-                              </select>
-                        </div>
-                        <div class="col-md-3">
-                            <button class="btn btn-primary" disabled>ክፈት</button>
-                        </div>
+                        
                     </div>
-                    
-                </div>
+                {{ end }}
             </div>
         </div>
 
     </div>
     
 </div>
+
 {{ end }}

@@ -26,13 +26,13 @@ func (vmsi *VMServiceImpl) Verify(pcid int) ([]entity.Party, []entity.Party, str
 }
 
 // Authenticate performs pc authentication
-func (vmsi *VMServiceImpl) Authenticate(pcnum string) (entity.VoteMachine, error) {
-	vm, err := vmsi.vmRepo.Authenticate(pcnum)
+func (vmsi *VMServiceImpl) Authenticate(pcnum string) ([]entity.Party, []entity.Party, entity.VoteMachine, error) {
+	regionalCands, nationalCands, vm, err := vmsi.vmRepo.Authenticate(pcnum)
 
 	if err != nil {
-		return entity.VoteMachine{}, err
+		return nil, nil, entity.VoteMachine{}, err
 	}
-	return vm, nil
+	return regionalCands, nationalCands, vm, nil
 }
 
 // Vote performs

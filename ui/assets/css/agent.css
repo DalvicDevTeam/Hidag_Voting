@@ -27,3 +27,7 @@ footer {
     height: 50px;
     float: right;
 }
+
+.hidden {
+    visibility: hidden;
+}

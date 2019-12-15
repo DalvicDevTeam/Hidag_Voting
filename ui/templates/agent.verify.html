@@ -1,6 +1,6 @@
 {{ define "agent.verify.layout" }}
 {{ template "agent.header" }}
-{{ template "agent.verify.content" }}
+{{ template "agent.verify.content" . }}
 {{ template "agent.footer" }}
 {{ end }}
 
@@ -9,10 +9,11 @@
     <div class="row mx-auto">
         <div class="col-md-3"></div>
         <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
-            <form  class="p-3 pt-5">
+            <form method="POST" action="/agent/verifyvoter"  class="p-3 pt-5">
                 <div class="form-group">
                 <label for="exampleInputEmail1 text-center">የመራጭ መለያ ቁጥር</label>
-                <input  class="form-control" name = "uuid" id="exampleInputEmail1" aria-describedby="InputHelp" placeholder="የመራጭ መለያ ቁጥር አስገባ" required>
+                <input type="text"  class="form-control" name = "uuid" placeholder="የመራጭ መለያ ቁጥር አስገባ" required>
+                <input type="text" name="pollnum" class="form-control" value="{{ .PollNo }}" placeholder="{{ .PollNo }}">
             </div>
             <button type="submit" class="btn btn-danger form-control">ፈልግ</button>
             </form>

@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	dbconn, err := sql.Open("postgres", "postgres://app_admin:password@localhost/restaurantdb?sslmode=disable")
+	dbconn, err := sql.Open("postgres", "postgres://postgres:password@localhost/hidag?sslmode=disable")
 
 	if err != nil {
 		panic(err)
@@ -49,7 +49,8 @@ func main() {
 
 	http.HandleFunc("/agent", agentHandler.AgentIndex)
 	http.HandleFunc("/agent/login", agentHandler.AgentLogin)
-	http.HandleFunc("/agent/verified", agentHandler.AgentVerified)
+	http.HandleFunc("/agent/verifyvoter", agentHandler.AgentVerifyVoter)
+	http.HandleFunc("/agent/openpc", agentHandler.Openpc)
 
 	http.ListenAndServe(":8080", nil)
 }

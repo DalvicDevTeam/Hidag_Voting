@@ -6,113 +6,64 @@
 
 {{ define "voter.vote.content" }}
 <div class="container mt-5">
-    <form action="" method="post" class="mb-5">
+    {{ . }}
+    <form action="/voter/vote" id="vote-form" method="post" class="mb-5">
         <div class="row">
             <div class="col-md-6 p-3 bg-white">
                 <h3 class="text-center"><b>የፌደራል</b> </h3>
+                {{ range .NatCand }}
                 <div class="party-item row border p-3 mx-auto mt-4 mb-2">
                     <div class="col-md-3">
                         <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
                     </div>
+                    
                     <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
+                        <h3>{{ .Name }}</h3>
+                        <p>ተወካይ፡ {{ .Representative }}</p>
                     </div>
                     <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="nationalparty" value="prosperity" aria-label="Checkbox for following text input">
+                        <input type="radio" class="radio" name="nationalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
                     </div>
                 </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ </h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="nationalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="nationalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="nationalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
+                {{ end }}
+                
             </div>
             <div class="col-md-6 p-3 bg-white">
                 <h3 class="text-center"><b>የክልል</b> </h3>
+                {{ range .RegCand }}
                 <div class="party-item row border p-3 mx-auto mt-4 mb-2">
                     <div class="col-md-3">
                         <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
                     </div>
+                    
                     <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
+                        <h3>{{ .Name }}</h3>
+                        <p>ተወካይ፡ {{ .Representative}}</p>
                     </div>
                     <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="regionalparty" value="prosperity" aria-label="Checkbox for following text input">
+                        <input type="radio" class="radio" name="regionalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
                     </div>
                 </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ </h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="regionalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="regionalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
-                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
-                    <div class="col-md-3">
-                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
-                    </div>
-                    <div class="col-md-6 mt-3">
-                        <h3>ብልጽግና ፓርቲ</h3>
-                        <p>ተወካይ፡ ዶ/ር አብይ አህመድ</p>
-                    </div>
-                    <div class="col-md-3 ">
-                        <input type="radio" class="radio" name="regionalparty" value="prosperity" aria-label="Checkbox for following text input">
-                    </div>
-                </div>
+                {{ end }}
+            
                 <input type="submit" id="vote-btn" class="btn btn-success" value="ምረጥ">
 
             </div>
         </div>
     </form>
+    <script>
+        $("#vote-form").submit(function(e){
+            e.preventDefault();
+            $.post("http://localhost:8080/voter/vote",
+            {
+                voterid: $id,
+                pcnum: a
+            }, function(data, status){
+                if(status === 'success') {
+                    window.location.href = "http://localhost:8080/agent"
+                }
+            });
+        })
+    </script>
 </div>
 {{ end }}
