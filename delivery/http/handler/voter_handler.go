@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
 
 	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
 
@@ -62,5 +63,22 @@ func (ah *VMHandler) VoterLogin(w http.ResponseWriter, r *http.Request) {
 func (ah *VMHandler) VoterVote(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "voter.vote.layout", nil)
+	} else {
+		natid, err := strconv.Atoi(r.PostFormValue("nid"))
+		regid, err1 := strconv.Atoi(r.PostFormValue("rid"))
+		if err != nil && err1 != nil {
+
+		}
+		vid := helper.GetVMData().ID
+
+		err2 := ah.vmSrv.Vote(regid, natid, vid)
+
+		if err2 != nil {
+			panic(err2)
+			w.Write([]byte("error"))
+		} else {
+			w.Write([]byte("success"))
+		}
+
 	}
 }

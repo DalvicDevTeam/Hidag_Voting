@@ -101,7 +101,7 @@ func (vmri *VMRepositoryImpl) Authenticate(pcnum string) ([]entity.Party, []enti
 			for natrows.Next() {
 				nc := entity.Party{}
 				err := natrows.Scan(&nc.ID, &nc.ImageURL, &nc.Representative, &nc.Name)
-				
+
 				if err != nil {
 					return nil, nil, vm, errors.New(" natrows scanning failed")
 				}
@@ -121,22 +121,33 @@ func (vmri *VMRepositoryImpl) Authenticate(pcnum string) ([]entity.Party, []enti
 }
 
 // Vote performs
-func (vmri *VMRepositoryImpl) Vote(rid int, nid int, vid string) error {
-	voter := entity.Votes{}
-	_, err := vmri.conn.Exec("INSERT INTO votes(voter_id,regional_id,national_id) VALUES($1,$2,$3)", voter.VoterID, voter.RegionalID, voter.NationalID)
+func (vmri *VMRepositoryImpl) Vote(rid int, nid int, vid int) error {
+	// voter := entity.Votes{}
+	fmt.Println("pcid: ", vid)
+	row := vmri.conn.QueryRow("select voter_id from votem_voter where votem_id = $1", vid)
+	var voterid string
+	if row != nil {
+		row.Scan(&voterid)
+		fmt.Println("voterid: ", voterid)
+		_, err := vmri.conn.Exec("INSERT INTO votes(voter_id,regional_id,national_id) VALUES($1,$2,$3)", voterid, rid, nid)
 
-	if err != nil {
+		if err != nil {
+			return errors.New("can't insert to votes")
+		}
 
-		return errors.New("can't insert to votes")
+		_, err1 := vmri.conn.Exec("UPDATE party_poll SET regional_vote=regional_vote + 1 WHERE party_id = $1 ", rid)
+		_, err2 := vmri.conn.Exec("UPDATE party_poll SET national_vote=national_vote + 1 WHERE party_id = $1 ", nid)
+		_, err3 := vmri.conn.Exec("UPDATE voters set voted = 1 where voter_id = $1", voterid)
+		_, err5 := vmri.conn.Exec("update vote_machines set status = 0 where id = $1", vid)
+		_, err4 := vmri.conn.Exec("DELETE FROM votem_voter WHERE voter_id = $1;", voterid)
+
+		if err1 != nil || err2 != nil || err3 != nil || err4 != nil || err5 != nil {
+			return errors.New("error in voting")
+		}
+
+	} else {
+		return errors.New("can't find user")
 	}
 
-	_, err1 := vmri.conn.Exec("UPDATE party_poll SET regional_vote=regional_vote + 1 WHERE party_id = $1 ", rid)
-	_, err2 := vmri.conn.Exec("UPDATE party_poll SET national_vote=national_vote + 1 WHERE party_id = $1 ", nid)
-	_, err3 := vmri.conn.Exec("UPDATE voters set voted = 1 where id = $1", vid)
-	_, err4 := vmri.conn.Exec("DELETE FROM votes WHERE voter_id = $1;", vid)
-
-	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
-		return errors.New("error in voting")
-	}
 	return nil
 }

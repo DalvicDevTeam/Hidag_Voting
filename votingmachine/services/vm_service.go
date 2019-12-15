@@ -36,7 +36,7 @@ func (vmsi *VMServiceImpl) Authenticate(pcnum string) ([]entity.Party, []entity.
 }
 
 // Vote performs
-func (vmsi *VMServiceImpl) Vote(rid int, nid int, vid string) error {
+func (vmsi *VMServiceImpl) Vote(rid int, nid int, vid int) error {
 	err := vmsi.vmRepo.Vote(rid, nid, vid)
 	if err != nil {
 		return err

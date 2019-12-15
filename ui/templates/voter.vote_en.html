@@ -10,7 +10,7 @@
     <form id="vote-form" method="post" class="mb-5">
         <div class="row">
             <div class="col-md-6 p-3 bg-white">
-                <h3 class="text-center"><b>የፌደራል</b> </h3>
+                <h3 class="text-center"><b>Federal</b> </h3>
                 {{ range .NatCand }}
                 <div class="party-item row border p-3 mx-auto mt-4 mb-2">
                     <div class="col-md-3">
@@ -19,7 +19,7 @@
                     
                     <div class="col-md-6 mt-3">
                         <h3>{{ .Name }}</h3>
-                        <p>ተወካይ፡ {{ .Representative }}</p>
+                        <p>Representative {{ .Representative }}</p>
                     </div>
                     <div class="col-md-3 ">
                         <input type="radio" class="radio" name="nationalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
@@ -29,7 +29,7 @@
                 
             </div>
             <div class="col-md-6 p-3 bg-white">
-                <h3 class="text-center"><b>የክልል</b> </h3>
+                <h3 class="text-center"><b>Region</b> </h3>
                 {{ range .RegCand }}
                 <div class="party-item row border p-3 mx-auto mt-4 mb-2">
                     <div class="col-md-3">
@@ -38,7 +38,7 @@
                     
                     <div class="col-md-6 mt-3">
                         <h3>{{ .Name }}</h3>
-                        <p>ተወካይ፡ {{ .Representative}}</p>
+                        <p>Representative: {{ .Representative}}</p>
                     </div>
                     <div class="col-md-3 ">
                         <input type="radio" class="radio" name="regionalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
@@ -46,7 +46,7 @@
                 </div>
                 {{ end }}
             
-                <input type="submit" id="vote-btn" class="btn btn-success" value="ምረጥ">
+                <input type="submit" id="vote-btn" class="btn btn-success" value="Submit">
 
             </div>
         </div>
