@@ -1,0 +1,80 @@
+{{ define "voter.vote.layout" }}
+{{ template "voter.header" }} 
+{{ template "voter.vote.content" . }}
+{{ template "voter.footer" }}
+{{ end }}
+
+{{ define "voter.vote.content" }}
+<div class="container mt-5">
+    <!-- {{ . }} -->
+    <form id="vote-form" method="post" class="mb-5">
+        <div class="row">
+            <div class="col-md-6 p-3 bg-white">
+                <h3 class="text-center"><b>Federal</b> </h3>
+                {{ range .NatCand }}
+                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
+                    <div class="col-md-3">
+                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
+                    </div>
+                    
+                    <div class="col-md-6 mt-3">
+                        <h3>{{ .Name }}</h3>
+                        <p>Representative {{ .Representative }}</p>
+                    </div>
+                    <div class="col-md-3 ">
+                        <input type="radio" class="radio" name="nationalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                {{ end }}
+                
+            </div>
+            <div class="col-md-6 p-3 bg-white">
+                <h3 class="text-center"><b>Region</b> </h3>
+                {{ range .RegCand }}
+                <div class="party-item row border p-3 mx-auto mt-4 mb-2">
+                    <div class="col-md-3">
+                        <img src="../assets/img/plogo.svg" width="100px" class="mx-auto" alt="">
+                    </div>
+                    
+                    <div class="col-md-6 mt-3">
+                        <h3>{{ .Name }}</h3>
+                        <p>Representative: {{ .Representative}}</p>
+                    </div>
+                    <div class="col-md-3 ">
+                        <input type="radio" class="radio" name="regionalparty" value="{{ .ID }}" aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                {{ end }}
+            
+                <input type="submit" id="vote-btn" class="btn btn-success" value="Submit">
+
+            </div>
+        </div>
+    </form>
+    <script>
+        $("#vote-form").submit(function(e){
+            e.preventDefault();
+            $natid = $("input[name='nationalparty']:checked").val();
+            $regid = $("input[name='regionalparty']:checked").val();
+
+            if($natid == null || $regid == null){
+                alert("please select your vote!");
+            }
+            else{
+                console.log($natid, $regid);
+                $.post("http://localhost:8080/voter/vote",
+                {
+                    nid: $natid,
+                    rid: $regid
+                }, function(data, status){
+                    console.log(data);
+                    if(status === 'success') {
+                        // window.location.href = "http://localhost:8080/agent"
+                    }
+                });
+            }
+            
+        })
+    </script>
+</div>
+{{ end }}

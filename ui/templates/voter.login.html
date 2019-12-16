@@ -1,0 +1,40 @@
+{{ define "voter.login.layout" }}
+{{ template "voter.login.content" }}
+{{ template "voter.footer" }}
+{{ end }}
+
+{{ define "voter.login.content" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/agent.css">
+    <title>Hidag E-voting system</title>
+</head>
+<body>
+    <div class="container mx-auto">
+        <div class="row mx-auto">
+            <div class="col-md-3"></div>
+            <div id="form-login" class="col-md-6 shadow-sm bg-white rounded" >
+                <div class="mx-auto" id="logo">
+                    <img src="../assets/img/logo.jpg"  width="200px" alt="" srcset="">
+                    <h5 class="text-center">ሕዳግ የምርጫ መተግበሪያ ውኂብ</h5>
+                </div>
+                <form method="POST" action="/voter/login"  class="p-3 pt-5">
+                    <div class="form-group">
+                    <label for="exampleInputEmail1 text-center">የመምረጫ ማሽን መለያ ቁጥር</label>
+                    <input type="text" name="vmnum" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="የመምረጫ ማሽን መለያ ቁጥር አስገባ">
+                </div>
+                <button type="submit" class="btn btn-success form-control">ቀጥል</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
+
+{{ end }}

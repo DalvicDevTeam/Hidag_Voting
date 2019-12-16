@@ -27,8 +27,8 @@ func (asi *AgentServiceImpl) Authenticate(id string, password string) (entity.Ag
 }
 
 // Verify reps
-func (asi *AgentServiceImpl) Verify(id string) ([]entity.VoteMachine, entity.Voter, error) {
-	vm, voter, err := asi.agentRepo.Verify(id)
+func (asi *AgentServiceImpl) Verify(id string, pollnum string) ([]entity.VoteMachine, entity.Voter, error) {
+	vm, voter, err := asi.agentRepo.Verify(id, pollnum)
 
 	if err != nil {
 		return nil, entity.Voter{}, err

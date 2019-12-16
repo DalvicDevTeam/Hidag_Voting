@@ -7,6 +7,6 @@ import (
 // AgentRepository rep
 type AgentRepository interface {
 	Authenticate(id string, password string) (entity.Agent, error)
-	Verify(id string) ([]entity.VoteMachine, entity.Voter, error)
+	Verify(id string, pollnum string) ([]entity.VoteMachine, entity.Voter, error)
 	OpenPc(voterid string, pcid int, lang string) error
 }

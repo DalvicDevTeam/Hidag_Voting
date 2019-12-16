@@ -16,8 +16,8 @@ func NewVMServiceImpl(vmRepo votingmachine.VMRepository) *VMServiceImpl {
 }
 
 // Verify performs user authentication
-func (vmsi *VMServiceImpl) Verify() ([]entity.Party, []entity.Party, string, error) {
-	regionalCands, nationalCands, vid, err := vmsi.vmRepo.Verify()
+func (vmsi *VMServiceImpl) Verify(pcid int) ([]entity.Party, []entity.Party, string, error) {
+	regionalCands, nationalCands, vid, err := vmsi.vmRepo.Verify(pcid)
 
 	if err != nil {
 		return nil, nil, "", err
@@ -26,17 +26,17 @@ func (vmsi *VMServiceImpl) Verify() ([]entity.Party, []entity.Party, string, err
 }
 
 // Authenticate performs pc authentication
-func (vmsi *VMServiceImpl) Authenticate(pcnum string) (entity.VoteMachine, error) {
-	vm, err := vmsi.vmRepo.Authenticate(pcnum)
+func (vmsi *VMServiceImpl) Authenticate(pcnum string) ([]entity.Party, []entity.Party, entity.VoteMachine, error) {
+	regionalCands, nationalCands, vm, err := vmsi.vmRepo.Authenticate(pcnum)
 
 	if err != nil {
-		return entity.VoteMachine{}, err
+		return nil, nil, entity.VoteMachine{}, err
 	}
-	return vm, nil
+	return regionalCands, nationalCands, vm, nil
 }
 
 // Vote performs
-func (vmsi *VMServiceImpl) Vote(rid int, nid int, vid string) error {
+func (vmsi *VMServiceImpl) Vote(rid int, nid int, vid int) error {
 	err := vmsi.vmRepo.Vote(rid, nid, vid)
 	if err != nil {
 		return err

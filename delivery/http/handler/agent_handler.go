@@ -1,8 +1,14 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
+	"strconv"
+
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/entity"
+
+	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/helper"
 
 	"github.com/NatnaelBerhanu-1/Hackathon/Hidag_Voting/agent"
 )
@@ -13,12 +19,18 @@ type AgentHandler struct {
 	agentSrv agent.AgentService
 }
 
+// Data struct
+type Data struct {
+	Vms   []entity.VoteMachine
+	Voter entity.Voter
+}
+
 // NewAgentHandler creates new agent handler struct
 func NewAgentHandler(T *template.Template, catserv agent.AgentService) *AgentHandler {
 	return &AgentHandler{tmpl: T, agentSrv: catserv}
 }
 
-// AgentIndex handles request on /Agent
+// AgentIndex handles request on /agent
 func (ah *AgentHandler) AgentIndex(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "agent.verify.layout", nil)
@@ -30,27 +42,55 @@ func (ah *AgentHandler) AgentLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "agent.login.layout", nil)
 	} else {
-		id := r.FormValue("email")
+		id := r.FormValue("id")
 		pass := r.FormValue("password")
-		_, err := ah.agentSrv.Authenticate(id, pass)
+		fmt.Println(id, pass)
+		agent, err := ah.agentSrv.Authenticate(id, pass)
+		helper.NewAgentData(agent)
 		if err != nil {
 			panic(err)
 		}
-		http.Redirect(w, r, "/Agent", http.StatusSeeOther)
+		ah.tmpl.ExecuteTemplate(w, "agent.verify.layout", agent)
 
 	}
 }
 
-// AgentVerified handles request on /agent/verified
-func (ah *AgentHandler) AgentVerified(w http.ResponseWriter, r *http.Request) {
+// AgentVerifyVoter handles request on /agent/verifyvoter
+func (ah *AgentHandler) AgentVerifyVoter(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		ah.tmpl.ExecuteTemplate(w, "agent.verified.layout", nil)
+		fmt.Println(helper.GetAgentData())
 	} else {
 		uuid := r.FormValue("uuid")
-		_, _, err := ah.agentSrv.Verify(uuid)
+		pollnum := r.FormValue("pollnum")
+
+		fmt.Println("uuid: ", uuid)
+		fmt.Println("pollnum: ", pollnum)
+
+		vms, voter, err := ah.agentSrv.Verify(uuid, pollnum)
+		data := &Data{Vms: vms, Voter: voter}
+		helper.NewVoter(voter)
 		if err != nil {
 			panic(err)
 		}
-		http.Redirect(w, r, "/agent/verified", http.StatusSeeOther)
+
+		ah.tmpl.ExecuteTemplate(w, "agent.verified.layout", data)
+		// http.Redirect(w, r, "/agent/verified", http.StatusSeeOther)
+	}
+}
+
+// Openpc handler request on agent/openpc
+func (ah *AgentHandler) Openpc(w http.ResponseWriter, r *http.Request) {
+	voterid := r.PostFormValue("voterid")
+	pcn := r.PostFormValue("pcnum")
+	// w.Write([]byte("failed"))
+	// fmt.Println(voterid, pcn)
+	pcnum, err := strconv.Atoi(pcn)
+	if err != nil {
+		panic(err)
+	}
+	err2 := ah.agentSrv.OpenPc(voterid, pcnum, "")
+	if err2 != nil {
+		panic(err)
 	}
 }
